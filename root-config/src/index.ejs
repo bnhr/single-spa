@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Single Spa Microfrontend</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/regenerator-runtime@0.13.7/runtime.min.js"></script>
+
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self' https: localhost:*; script-src 'unsafe-inline' 'unsafe-eval' https: localhost:*; connect-src https: localhost:* ws://localhost:*; style-src 'unsafe-inline' https:; object-src 'none';"
+    />
+    <meta name="importmap-type" content="systemjs-importmap" />
+
+    <script type="systemjs-importmap">
+      {
+        "imports": {
+          "single-spa": "https://cdn.jsdelivr.net/npm/single-spa@5.9.0/lib/system/single-spa.min.js"
+        }
+      }
+    </script>
+    <link
+      rel="preload"
+      href="https://cdn.jsdelivr.net/npm/single-spa@5.9.0/lib/system/single-spa.min.js"
+      as="script"
+    />
+
+    <script src="./state.js"></script>
+
+    <% if (isLocal) { %>
+    <script type="systemjs-importmap">
+      {
+        "imports": {
+          "react": "https://cdn.jsdelivr.net/npm/react@16.13.1/umd/react.production.min.js",
+          "react-dom": "https://cdn.jsdelivr.net/npm/react-dom@16.13.1/umd/react-dom.production.min.js",
+          "vue": "https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.min.js",
+          "vue-router": "https://cdn.jsdelivr.net/npm/vue-router@3.1.6/dist/vue-router.min.js",
+          "@bnhr/root-config": "//localhost:9000/bnhr-root-config.js",
+          "@bnhr/styleguide": "https://localhost:9001/bnhr-styleguide.js",
+          "@bnhr/navbar": "https://localhost:9002/bnhr-navbar.js",
+          "@bnhr/frontend": "http://localhost:8080/js/app.js",
+          "@bnhr/footer": "http://localhost:5000/bnhr-footer.js"
+        }
+      }
+    </script>
+    <% } %>
+
+    <script src="https://cdn.jsdelivr.net/npm/import-map-overrides@2.2.0/dist/import-map-overrides.js"></script>
+    <% if (isLocal) { %>
+    <script src="https://cdn.jsdelivr.net/npm/systemjs@6.8.3/dist/system.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/systemjs@6.8.3/dist/extras/amd.js"></script>
+    <% } else { %>
+    <script src="https://cdn.jsdelivr.net/npm/systemjs@6.8.3/dist/system.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/systemjs@6.8.3/dist/extras/amd.min.js"></script>
+    <% } %>
+
+    <template id="single-spa-layout">
+      <single-spa-router>
+        <nav>
+          <application
+            name="@bnhr/navbar"
+            loaders="topNav"
+            errors="topNav"
+          ></application>
+        </nav>
+        <main>
+          <route default>
+            <div class="content">
+              <div class="card">
+                <h1 class="title">Hello from root config</h1>
+              </div>
+              <div>
+                <application
+                  name="@bnhr/frontend"
+                  loaders="frontend"
+                  errors="frontend"
+                ></application>
+              </div>
+              <footer>
+                <application
+                  name="@bnhr/footer"
+                  loaders="footer"
+                  errors="footer"
+                ></application>
+              </footer>
+            </div>
+          </route>
+        </main>
+      </single-spa-router>
+    </template>
+  </head>
+  <body>
+    <script>
+      System.import('@bnhr/root-config');
+      System.import('@bnhr/styleguide');
+    </script>
+    <import-map-overrides-full
+      show-when-local-storage="devtools"
+      dev-libs
+    ></import-map-overrides-full>
+  </body>
+</html>

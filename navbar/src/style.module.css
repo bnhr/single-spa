@@ -1,0 +1,15 @@
+.titleReact {
+  color: #61dafb;
+}
+
+.cardReact {
+  border-color: #61dafb;
+  flex-direction: column;
+}
+
+.menuReact {
+  display: flex;
+  justify-content: space-between;
+  min-width: 40rem;
+  margin: 0 auto;
+}
