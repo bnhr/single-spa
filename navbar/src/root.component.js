@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from '@reach/router';
 import './style.module.css';
 
 export default function Root() {
@@ -8,8 +9,12 @@ export default function Root() {
       <h2 className="titleReact title">heelooo from react navbar</h2>
       <nav>
         <ul className="menuReact">
-          <li>Vue</li>
-          <li>Svelte</li>
+          <li>
+            <Link to="/vueapp">Vue App</Link>
+          </li>
+          <li>
+            <Link to="/svelteapp">Svelte App</Link>
+          </li>
         </ul>
       </nav>
     </div>
