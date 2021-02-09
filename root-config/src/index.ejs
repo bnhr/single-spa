@@ -14,10 +14,17 @@
     />
     <meta name="importmap-type" content="systemjs-importmap" />
 
+    <!-- import shared dependencies -->
     <script type="systemjs-importmap">
       {
         "imports": {
-          "single-spa": "https://cdn.jsdelivr.net/npm/single-spa@5.9.0/lib/system/single-spa.min.js"
+          "single-spa": "https://cdn.jsdelivr.net/npm/single-spa@5.9.0/lib/system/single-spa.min.js",
+          "react": "https://cdn.jsdelivr.net/npm/react@16.13.1/umd/react.production.min.js",
+          "react-dom": "https://cdn.jsdelivr.net/npm/react-dom@16.13.1/umd/react-dom.production.min.js",
+          "vue": "https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.min.js",
+          "vue-router": "https://cdn.jsdelivr.net/npm/vue-router@3.1.6/dist/vue-router.min.js",
+          "rxjs": "https://unpkg.com/@esm-bundle/rxjs/system/rxjs.min.js",
+          "rxjs/operators": "https://unpkg.com/@esm-bundle/rxjs/system/rxjs-operators.min.js"
         }
       }
     </script>
@@ -29,19 +36,17 @@
 
     <script src="./state.js"></script>
 
+    <!-- import all micro frontends -->
     <% if (isLocal) { %>
     <script type="systemjs-importmap">
       {
         "imports": {
-          "react": "https://cdn.jsdelivr.net/npm/react@16.13.1/umd/react.production.min.js",
-          "react-dom": "https://cdn.jsdelivr.net/npm/react-dom@16.13.1/umd/react-dom.production.min.js",
-          "vue": "https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.min.js",
-          "vue-router": "https://cdn.jsdelivr.net/npm/vue-router@3.1.6/dist/vue-router.min.js",
           "@bnhr/root-config": "//localhost:9000/bnhr-root-config.js",
           "@bnhr/styleguide": "https://localhost:9001/bnhr-styleguide.js",
           "@bnhr/navbar": "https://localhost:9002/bnhr-navbar.js",
           "@bnhr/frontend": "http://localhost:8080/js/app.js",
-          "@bnhr/footer": "http://localhost:5000/bnhr-footer.js"
+          "@bnhr/footer": "http://localhost:5000/bnhr-footer.js",
+          "@bnhr/fakestate": "https://localhost:9003/bnhr-fakestate.js"
         }
       }
     </script>
@@ -58,6 +63,7 @@
 
     <template id="single-spa-layout">
       <single-spa-router>
+        <!-- define navbar -->
         <nav>
           <application
             name="@bnhr/navbar"
@@ -66,6 +72,7 @@
           ></application>
         </nav>
         <main>
+          <!-- define frontend/vue -->
           <route path="vueapp">
             <application
               name="@bnhr/frontend"
@@ -73,11 +80,13 @@
               errors="frontend"
             ></application>
           </route>
+          <!-- define footer/svelte -->
           <route path="svelteapp">
             <application name="@bnhr/footer"></application>
           </route>
           <route default>
             <div class="content">
+              <!-- define root element -->
               <div class="card">
                 <h1 class="title">Hello from root config.</h1>
               </div>
