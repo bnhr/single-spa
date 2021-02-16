@@ -1,7 +1,6 @@
 <template>
   <div class="hello">
     <h1 class="title">{{ msg }}</h1>
-    <p>counter:</p>
   </div>
 </template>
 
